@@ -1,0 +1,19 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+
+build:
+  local:
+    push: false
+  artifacts:
+    - image: nouman95/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+
+manifests:
+  rawYaml:
+    - ./infra/k8s/*

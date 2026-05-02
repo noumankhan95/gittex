@@ -1,0 +1,17 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: api-routes
+spec:
+  parentRefs:
+    - name: gittex-gateway
+  hostnames:
+    - ticketing.dev
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/users
+      backendRefs:
+        - name: auth-srv
+          port: 3000

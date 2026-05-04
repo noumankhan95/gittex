@@ -15,3 +15,11 @@ spec:
       backendRefs:
         - name: auth-srv
           port: 3000
+
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: client-src
+          port: 3000

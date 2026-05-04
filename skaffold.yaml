@@ -13,7 +13,14 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-
+    - image: nouman95/auth
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.ts"
+            dest: .
 manifests:
   rawYaml:
     - ./infra/k8s/*

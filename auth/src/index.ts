@@ -9,10 +9,10 @@ import { NotFoundError } from "./errors/not-found";
 import mongoose from "mongoose"
 import cookieSession from "cookie-session";
 const app = express();
-app.set("proxy", true)
+app.set("trust proxy", true)
 app.use(cookieSession({
     secure: true,
-
+    signed: false
 }))
 app.use(json());
 app.use(SigninRouter)
@@ -24,6 +24,9 @@ app.get("*", () => {
 })
 app.use(errorHandler)
 const start = async () => {
+    if (!process.env.JWT_KEY) {
+        throw new Error("JWT Must be defined")
+    }
     try {
         await mongoose.connect("mongodb://auth-mongo-srv:27017/auth")
     } catch (e) {

@@ -4,8 +4,8 @@ import { SignupRouter } from "./routes/signup";
 import { SigninRouter } from "./routes/signin";
 import { SignoutRouter } from "./routes/signout";
 import { CurrentUserRouter } from "./routes/current-user";
-import { errorHandler } from "./middleware/error-handler";
-import { NotFoundError } from "./errors/not-found";
+import { errorHandler } from "@nmstickets/common";
+import { NotFoundError } from "@nmstickets/common";
 import cookieSession from "cookie-session";
 const app = express();
 app.set("trust proxy", true)

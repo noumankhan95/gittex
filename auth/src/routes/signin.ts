@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
 import { body } from "express-validator";
-import { validateRequest } from "../middleware/validate-request";
+import { validateRequest } from "@nmstickets/common";
 import { User } from "../models/user-schema";
-import { BadRequestError } from "../errors/bad-request-error";
+import { BadRequestError } from "@nmstickets/common";
 import { Password } from "../services/password";
 import jwt from "jsonwebtoken"
 

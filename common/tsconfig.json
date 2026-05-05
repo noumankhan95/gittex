@@ -10,8 +10,9 @@
     "strict": true,
     "skipLibCheck": true,
     "moduleResolution": "node16",
-    "types": [
-      "node"
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types"
     ]
   }
 }

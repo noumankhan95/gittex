@@ -4,7 +4,7 @@ import { Ticket } from "../models/ticket-model"
 const router = Router()
 
 router.get("/api/tickets", async (req: Request, res: Response) => {
-    const ticket = Ticket.find({})
+    const ticket = await Ticket.find({})
 
     res.send(ticket)
 })

@@ -15,7 +15,13 @@ spec:
       backendRefs:
         - name: auth-srv
           port: 3000
-
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/tickets
+      backendRefs:
+        - name: tickets-srv
+          port: 3000
     - matches:
         - path:
             type: PathPrefix

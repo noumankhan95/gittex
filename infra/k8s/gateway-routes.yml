@@ -27,5 +27,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: client-src
+        - name: client-srv
           port: 3000

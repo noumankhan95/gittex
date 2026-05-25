@@ -11,7 +11,8 @@
     "clean": "del-cli ./build/*",
     "build": "npm run clean && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pub": "git add . && git commit -m \"Updates\" && npm version patch && npm run build && npm publish"
+    "pub": "git add . && git commit -m \"Updates\" && npm version patch && npm run build && npm publish",
+    "publish": "npm version patch && npm run build && npm publish"
   },
   "keywords": [],
   "author": "",

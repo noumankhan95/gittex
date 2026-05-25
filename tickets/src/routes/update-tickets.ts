@@ -2,6 +2,8 @@ import { Router, Request, Response } from "express"
 import { NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from "@nmstickets/common";
 import { body } from "express-validator"
 import { Ticket } from "../models/ticket-model";
+import { TicketUpdatedPublisher } from "../events/publishers/TicketUpdatedPublisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = Router();
 
 router.put("/api/tickets/:id", requireAuth, [body("title").not().isEmpty().withMessage("Title is empty"), body("price").isFloat({ gt: 0 }).withMessage("Price must be greater than zero")], validateRequest, async (req: Request, res: Response) => {
@@ -12,6 +14,11 @@ router.put("/api/tickets/:id", requireAuth, [body("title").not().isEmpty().withM
         title: req.body.title, price: req.body.price
     })
     await ticket.save();
+    await new TicketUpdatedPublisher(natsWrapper.js).publish({
+        id: ticket.id, price: ticket.price, userId: req.currentUser!.id,
+        title: ticket.title,
+        version: ticket.version,
+    });
     res.status(200).send(ticket)
 })
 

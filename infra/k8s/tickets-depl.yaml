@@ -11,29 +11,30 @@ spec:
     metadata:
       labels:
         app: tickets
-    spec: 
+    spec:
       containers:
         - name: tickets
           image: nouman95/tickets
           env:
+            - name: NATS_URL
+              value: "nats://nats-srv:4222"
             - name: MONGO_URI
-              value: 'mongodb://tickets-mongo-srv:27017/tickets'
+              value: "mongodb://tickets-mongo-srv:27017/tickets"
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
-              
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: tickets-srv
-spec: 
-  selector: 
+spec:
+  selector:
     app: tickets
-  ports:  
+  ports:
     - name: tickets
       protocol: TCP
       port: 3000

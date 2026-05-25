@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import { app } from "./app"
+import { natsWrapper } from "./nats-wrapper"
 const start = async () => {
     if (!process.env.JWT_KEY) {
         throw new Error("JWT Must be defined")
@@ -7,9 +8,15 @@ const start = async () => {
     if (!process.env.MONGO_URI) {
         throw new Error("Mongo URI must be defined")
     }
+    if (!process.env.NATS_URL) {
+        throw new Error("NATS_URL must be defined")
+    }
     try {
+        await natsWrapper.connect(process.env.NATS_URL)
+        process.on("SIGTERM", async () => await natsWrapper.gracefulShutdown())
+        process.on("SIGINT", async () => await natsWrapper.gracefulShutdown())
         await mongoose.connect(process.env.MONGO_URI)
-    } catch (e) { 
+    } catch (e) {
         console.log(e)
     }
     app.listen(3000, () => {

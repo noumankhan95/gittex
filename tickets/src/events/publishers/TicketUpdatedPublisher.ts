@@ -1,5 +1,5 @@
-import { Publisher, Subjects, TicketUpdated } from "@nmstickets/common";
+import { Publisher, Subjects, TicketUpdatedEvent } from "@nmstickets/common";
 
-export class TicketUpdatedPublisher extends Publisher<TicketUpdated> {
+export class TicketUpdatedPublisher extends Publisher<TicketUpdatedEvent> {
     subject: Subjects.TicketUpdated = Subjects.TicketUpdated;
 }

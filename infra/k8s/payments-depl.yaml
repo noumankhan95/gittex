@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  app: payments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-depl
+  template:
+    metadata:
+      labels:
+        app: payments-depl
+    spec:
+      containers:
+        containers:
+          - name: payments
+            image: nouman95/payments
+            env:
+              - name: NATS_URL
+                value: "nats://nats-srv:4222"
+              - name: MONGO_URI
+                value: "mongodb://payments-mongo-srv:27017/payments"
+              - name: JWT_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: jwt-secret
+                    key: JWT_KEY

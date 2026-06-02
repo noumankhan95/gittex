@@ -8,5 +8,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@nats-io/jetstream": "^3.4.0",
+    "@nats-io/transport-node": "^3.4.0",
+    "@nmstickets/common": "^1.0.21",
+    "bullmq": "^5.78.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1"
+  }
 }

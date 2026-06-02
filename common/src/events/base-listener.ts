@@ -11,7 +11,7 @@ export abstract class Listener<T extends Event> {
     abstract queueGroupName: string;
     abstract onMessage(data: T['data'], msg: JsMsg): void
 
-    private client: JetStreamClient;
+    protected client: JetStreamClient;
     private jsm: JetStreamManager;
     protected ackWait = 5 * 1000;
 

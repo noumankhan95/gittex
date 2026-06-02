@@ -1,22 +1,43 @@
-import { MongoMemoryServer } from "mongodb-memory-server"
-import mongoose from "mongoose"
-import { app } from "../app"
-let mongo: any;
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import jwt from "jsonwebtoken"
+declare global {
+    var signin: () => string[];
+}
+
+let mongo: MongoMemoryServer;
+
 beforeAll(async () => {
-    process.env.JWT_KEY = "asdf";
-    mongo = await MongoMemoryServer.create()
-    const mongoUri = mongo.getUri();
-    await mongoose.connect(mongoUri)
-})
+    process.env.JWT_KEY = 'test-jwt-key';
+
+    mongo = await MongoMemoryServer.create();
+    await mongoose.connect(mongo.getUri());
+});
 
 beforeEach(async () => {
-    const collections = await mongoose.connection.db?.collections();
-    if (collections)
-        for (let collection of collections) {
-            await collection.deleteMany({})
-        }
-})
+    // clear all mock call counts between tests
+    jest.clearAllMocks();
+
+    const collections = await mongoose.connection.db!.collections();
+    for (let collection of collections) {
+        await collection.deleteMany({});
+    }
+});
+
 afterAll(async () => {
-    await mongoose.disconnect();   // better than connection.close()
-    await mongo.stop();
-})
+    if (mongo) await mongo.stop();
+    await mongoose.connection.close();
+});
+
+global.signin = () => {
+    const payload = {
+        id: new mongoose.Types.ObjectId().toHexString(),
+        email: 'test@test.com',
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_KEY!);
+    const session = JSON.stringify({ jwt: token });
+    const base64 = Buffer.from(session).toString('base64');
+
+    return [`session=${base64}`];
+};

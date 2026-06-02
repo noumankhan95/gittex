@@ -5,7 +5,6 @@ const router = Router()
 
 router.get("/api/tickets", async (req: Request, res: Response) => {
     const ticket = await Ticket.find({})
-
     res.send(ticket)
 })
 

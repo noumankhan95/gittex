@@ -7,6 +7,7 @@ import cookieSession from "cookie-session";
 import { CreateTicketRouter } from "./routes/create-ticket";
 import { ShowTicketRouter } from "./routes/show-ticket";
 import { AllTicketsRouter } from "./routes/all-ticket";
+import { UpdateTicketRouter } from "./routes/update-tickets";
 const app = express();
 app.set("trust proxy", true)
 app.use(cookieSession({
@@ -17,6 +18,7 @@ app.use(json());
 app.use(CreateTicketRouter)
 app.use(ShowTicketRouter)
 app.use(AllTicketsRouter)
+app.use(UpdateTicketRouter)
 app.use(() => {
     throw new NotFoundError();
 })

@@ -25,6 +25,20 @@ spec:
     - matches:
         - path:
             type: PathPrefix
+            value: /api/orders
+      backendRefs:
+        - name: orders-srv
+          port: 3000
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/payments
+      backendRefs:
+        - name: payments-srv
+          port: 3000
+    - matches:
+        - path:
+            type: PathPrefix
             value: /
       backendRefs:
         - name: client-srv

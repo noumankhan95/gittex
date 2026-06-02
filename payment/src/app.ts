@@ -4,6 +4,7 @@ import { json } from "body-parser";
 import { errorHandler } from "@nmstickets/common";
 import { NotFoundError } from "@nmstickets/common";
 import cookieSession from "cookie-session";
+import { createChargeRouter } from "./routes/create-charge";
 const app = express();
 app.set("trust proxy", true)
 app.use(cookieSession({
@@ -11,6 +12,7 @@ app.use(cookieSession({
     signed: false
 }))
 app.use(json());
+app.use(createChargeRouter)
 app.use(() => {
     throw new NotFoundError();
 })

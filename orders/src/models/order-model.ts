@@ -5,10 +5,11 @@ import { TicketDoc } from "./ticket-model"
 interface OrderAttrs {
     ticket: TicketDoc;
     userId: string;
-    OrderStatus: OrderStatus;
+    status: OrderStatus;
     expiresAt: Date;
 }
 export interface OrderDoc extends mongoose.Document {
+    id: string;
     userId: string;
     status: OrderStatus;
     expiresAt: Date;

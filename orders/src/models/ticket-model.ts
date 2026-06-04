@@ -5,7 +5,8 @@ import { OrderStatus } from "@nmstickets/common";
 interface TicketAttrs {
     title: string;
     price: number;
-    userId: string;
+    id: string;
+
 }
 
 export interface TicketDoc extends mongoose.Document {
@@ -18,8 +19,9 @@ export interface TicketDoc extends mongoose.Document {
 
 export interface TicketModel extends mongoose.Model<TicketDoc> {
     build(attrs: TicketAttrs): TicketDoc;
+    findByEvent(event: { id: string; version: number }): Promise<TicketDoc | null>;
 }
-const TicketSchema = new mongoose.Model({
+const TicketSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -27,25 +29,27 @@ const TicketSchema = new mongoose.Model({
     price: {
         type: Number,
         required: true
-    },
-    userId: {
-        type: String,
-        required: true
-    },
-    orderId: {
-        type: String,
     }
 }, {
     toJSON: {
         transform: (doc: any, ret: any) => {
-            ret.id = ret.id;
+            ret.id = ret._id;
             delete ret._id;
         }
     }
 })
-
+TicketSchema.statics.findByEvent = async (event: { id: string; version: number }) => {
+    return Ticket.findOne({
+        _id: event.id,
+        version: event.version - 1,
+    });
+};
 TicketSchema.statics.build = (attrs: TicketAttrs) => {
-    return new Ticket(attrs);
+    return new Ticket({
+        _id: attrs.id,    // explicitly set _id to tickets-service id
+        title: attrs.title,
+        price: attrs.price,
+    });
 }
 TicketSchema.methods.isReserved = async function () {
     // this === the ticket document that we just called 'isReserved' on

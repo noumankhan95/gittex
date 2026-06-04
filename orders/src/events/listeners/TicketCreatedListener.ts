@@ -6,15 +6,15 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
     subject: Subjects.TicketCreated = Subjects.TicketCreated;
     queueGroupName: string = queueGroupName;
     async onMessage(data: { id: string; version: number; title: string; price: number; userId: string; }, msg: JsMsg): Promise<void> {
-        const existingTicket = await Ticket.findById({ id: data.id })
+        const existingTicket = await Ticket.findById(data.id)
         if (existingTicket) {
             throw new Error("Ticket Exists")
         }
         const ticket = Ticket.build({
-            price: data.price,
+            id: data.id,        
             title: data.title,
-            userId: data.userId
-        })
+            price: data.price,
+        });
         await ticket.save();
         msg.ack()
     }

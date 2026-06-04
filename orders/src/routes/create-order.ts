@@ -50,7 +50,7 @@ router.post("/api/create-order", requireAuth, [
         await order.save();
 
         // Publish an event saying that an order was created
-        new OrderCreatedPublisher(natsWrapper.js).publish({
+        await new OrderCreatedPublisher(natsWrapper.js).publish({
             id: order.id,
             version: order.version,
             status: order.status,

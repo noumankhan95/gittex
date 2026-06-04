@@ -3,6 +3,8 @@ import { app } from "./app"
 import { natsWrapper } from "./nats-wrapper"
 import { TicketCreatedListener } from "./events/listeners/TicketCreatedListener"
 import { TicketUpdatedListener } from "./events/listeners/TicketUpdatedListener"
+import { ExpirationCompleteListener } from "./events/listeners/ExpirationCompletedListener"
+import { PaymentCreatedListener } from "./events/listeners/PaymentChargedListener"
 const start = async () => {
     if (!process.env.JWT_KEY) {
         throw new Error("JWT Must be defined")
@@ -20,6 +22,8 @@ const start = async () => {
         await mongoose.connect(process.env.MONGO_URI)
         await new TicketCreatedListener(natsWrapper.js, natsWrapper.jsm).listen()
         await new TicketUpdatedListener(natsWrapper.js, natsWrapper.jsm).listen()
+        await new ExpirationCompleteListener(natsWrapper.js, natsWrapper.jsm).listen()
+        await new PaymentCreatedListener(natsWrapper.js, natsWrapper.jsm).listen()
     } catch (e) {
         console.log(e)
     }

@@ -38,7 +38,7 @@ const TicketSchema = new mongoose.Schema({
         }
     }
 })
-TicketSchema.statics.findByEvent = async (event: { id: string; version: number }) => {
+TicketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
     return Ticket.findOne({
         _id: event.id,
         version: event.version - 1,

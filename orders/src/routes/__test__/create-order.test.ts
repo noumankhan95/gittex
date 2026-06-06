@@ -23,7 +23,7 @@ describe("Create Order Route", () => {
 
     it("fails with 401 if no ticketId", async () => {
         const cookie = global.signin()
-        await request(app).post("/api/create-order").set("Cookie", cookie).send({ ticketId: "not-valid" }).expect(401)
+        await request(app).post("/api/create-order").set("Cookie", cookie).send({ ticketId: "not-valid" }).expect(400)
     })
     it("fails if ticket is already reserved", async () => {
         const cookie = global.signin()

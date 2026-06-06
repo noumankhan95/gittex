@@ -1,8 +1,8 @@
 import request from "supertest"
 import { app } from "../../app"
 import { Ticket } from "../../models/ticket-model"
-import { natsWrapper } from "../../test/__mocks__/nats-wrapper"
 import mongoose from "mongoose"
+import { natsWrapper } from "../../nats-wrapper"
 
 describe("update tickets route handler", () => {
     const createTicket = async () => {

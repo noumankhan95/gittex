@@ -16,7 +16,7 @@ router.put("/api/tickets/:id", requireAuth, [body("title").not().isEmpty().withM
     })
     await ticket.save();
     await new TicketUpdatedPublisher(natsWrapper.js).publish({
-        id: ticket.id, price: ticket.price, userId: req.currentUser!.id,
+        id: ticket.id, price: ticket.price, userId: ticket.userId,
         title: ticket.title,
         version: ticket.version,
     });

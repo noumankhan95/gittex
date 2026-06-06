@@ -4,7 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node-dev src/index.ts",
+    "test": "jest --watchAll --no-cache"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "./tsconfig.json"
+      }
+    }
   },
   "keywords": [],
   "author": "",
@@ -13,10 +26,14 @@
     "@nats-io/jetstream": "^3.4.0",
     "@nats-io/transport-node": "^3.4.0",
     "@nmstickets/common": "^1.0.26",
+    "mongodb-memory-server": "^11.2.0",
     "mongoose": "^9.6.3",
     "mongoose-update-if-current": "^1.4.0"
   },
   "devDependencies": {
-    "@types/node": "^25.9.1"
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.9.1",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11"
   }
 }

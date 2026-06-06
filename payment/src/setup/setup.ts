@@ -1,8 +1,9 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken';
+
 declare global {
-    var signin: () => string[];
+    var signin: () => { cookie: string[]; id: string };
 }
 
 let mongo: MongoMemoryServer;
@@ -15,7 +16,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-    // clear all mock call counts between tests
     jest.clearAllMocks();
 
     const collections = await mongoose.connection.db!.collections();
@@ -30,14 +30,12 @@ afterAll(async () => {
 });
 
 global.signin = () => {
-    const payload = {
-        id: new mongoose.Types.ObjectId().toHexString(),
-        email: 'test@test.com',
-    };
+    const id = new mongoose.Types.ObjectId().toHexString();
+    const payload = { id, email: 'test@test.com' };
 
     const token = jwt.sign(payload, process.env.JWT_KEY!);
     const session = JSON.stringify({ jwt: token });
     const base64 = Buffer.from(session).toString('base64');
 
-    return [`session=${base64}`];
+    return { cookie: [`session=${base64}`], id };
 };

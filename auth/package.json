@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "ts-node-dev src/index.ts",
+    "build": "tsc",
     "test": "jest --watchAll --no-cache"
   },
   "jest": {

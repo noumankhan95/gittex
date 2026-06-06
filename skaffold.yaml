@@ -27,7 +27,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "**/*.ts"
+          - src: "src/**/*.ts"
             dest: .
     - image: nouman95/orders
       context: orders
@@ -35,23 +35,23 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "**/*.ts"
+          - src: "src/**/*.ts"
             dest: .
-    - image: nouman95/expiry
-      context: expiry
+    - image: nouman95/expiry 
+      context: expiry 
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "**/*.ts"
+          - src: "src/**/*.ts"
             dest: .
-    - image: nouman95/payment
+    - image: nouman95/payments 
       context: payment
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "**/*.ts"
+          - src: "src/**/*.ts"
             dest: .
 manifests:
   rawYaml:

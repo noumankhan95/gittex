@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev src/index.ts",
-    "test": "jest --watchAll --no-cache"
+    "test": "jest --watchAll --no-cache",
+    "build": "tsc"
   },
   "jest": {
     "preset": "ts-jest",
@@ -29,7 +30,9 @@
     "mongodb-memory-server": "^11.2.0",
     "mongoose": "^9.6.3",
     "mongoose-update-if-current": "^1.4.0",
-    "supertest": "^7.2.2"
+    "supertest": "^7.2.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.2"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

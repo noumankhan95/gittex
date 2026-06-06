@@ -11,20 +11,23 @@ spec:
     metadata:
       labels:
         app: nats
-    spec: 
+    spec:
       containers:
         - name: nats
           image: nats:latest
           args:
-            - '-js'
-            - '-sd'
-            - '/data'
+            - "-js"
+            - "-sd"
+            - "/data"
           ports:
             - containerPort: 4222
             - containerPort: 8222
           volumeMounts:
             - name: nats-data
-              emptyDir: {}
+              mountPath: /data
+      volumes:
+        - name: nats-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -33,7 +36,7 @@ metadata:
 spec:
   selector:
     app: nats
-  ports:  
+  ports:
     - name: client
       protocol: TCP
       port: 4222

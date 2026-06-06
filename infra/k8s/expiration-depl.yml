@@ -11,18 +11,12 @@ spec:
     metadata:
       labels:
         app: expiration
-  spec:
-    containers:
-      - name: expiration
-        image: nouman95/expiration
-        env:
-          - name: NATS_CLIENT_ID
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: NATS_URL
-            value: "http://nats-srv:4222"
-          - name: NATS_CLUSTER_ID
-            value: ticketing
-          - name: REDIS_HOST
-            value: expiration-redis-srv
+    spec:
+      containers:
+        - name: expiration
+          image: nouman95/expiry
+          env:
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: REDIS_HOST
+              value: expiration-redis-srv

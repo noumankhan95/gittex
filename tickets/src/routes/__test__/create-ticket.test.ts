@@ -1,7 +1,7 @@
 import request from "supertest"
 import { app } from "../../app"
 import { Ticket } from "../../models/ticket-model"
-import { natsWrapper } from "../../test/__mocks__/nats-wrapper"
+import { natsWrapper } from "../../nats-wrapper"
 
 describe("Create Ticket Route", () => {
     it("listens to new tickets", async () => {

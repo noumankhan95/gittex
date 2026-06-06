@@ -4,7 +4,7 @@ import { Order } from "../../models/order-model";
 import { OrderStatus } from "@nmstickets/common";
 import { Ticket, TicketDoc } from "../../models/ticket-model";
 import mongoose from "mongoose";
-import { natsWrapper } from "../../setup/__mocks__/nats-wrapper";
+import { natsWrapper } from "../../nats-wrapper";
 
 describe("Create Order Route", () => {
     const buildTicket = async () => {
@@ -16,14 +16,7 @@ describe("Create Order Route", () => {
         await ticket.save();
         return ticket;
     };
-    const createOrder = async (ticket: TicketDoc, userId: string) => {
-        return Order.build({
-            expiresAt: new Date(new Date().getTime() + 150000),
-            status: OrderStatus.Created,
-            ticket,
-            userId: userId
-        })
-    }
+  
     it("fails with 401 if user is not signed in", async () => {
         await request(app).post("/api/create-order").send({}).expect(401)
     })

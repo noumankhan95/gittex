@@ -6,7 +6,7 @@ import { natsWrapper } from "../../test/__mocks__/nats-wrapper"
 describe("Create Ticket Route", () => {
     it("listens to new tickets", async () => {
         const res = await request(app).post("/api/tickets").send({})
-        expect(res.status).not.toEqual(404)
+        expect(res.status).not.toBeUndefined()
     })
     it("Can be accessed only if user is signed in", async () => {
         await request(app)

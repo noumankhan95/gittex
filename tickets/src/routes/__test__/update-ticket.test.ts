@@ -27,35 +27,30 @@ describe("update tickets route handler", () => {
             .send({})
             .expect(401);
     })
-    it("returns with 401 if title is empty", async () => {
+    it("returns with 400 if title is empty", async () => {
         const cookie = global.signin();
         const id = new mongoose.Types.ObjectId().toHexString();
         await request(app).put(`/api/tickets/${id}`).set("Cookie", cookie)
             .send({ title: "", price: 10 })
-            .expect(401);
+            .expect(400);
     })
-    it("returns with 401 if price is zero", async () => {
+    it("returns with 400 if price is zero", async () => {
         const cookie = global.signin();
         const id = new mongoose.Types.ObjectId().toHexString();
         await request(app).put(`/api/tickets/${id}`).set("Cookie", cookie)
             .send({ title: "1", price: 0 })
-            .expect(401);
+            .expect(400);
     })
     it("returns error if ticket is not found", async () => {
         const cookie = global.signin();
         const id = new mongoose.Types.ObjectId().toHexString();
         await request(app).put(`/api/tickets/${id}`).set("Cookie", cookie)
             .send({ title: "#1", price: 10 })
-            .expect(401);
+            .expect(404);
     })
     it("fails if accessed by user not authorized", async () => {
         const { id } = await createTicket()
-        const otherUser = await request(app)
-            .post('/api/users/signup')
-            .send({ email: 'other@test.com', password: 'password' })
-            .expect(201);
-
-        const otherCookie = otherUser.get('Set-Cookie')!;
+        const otherCookie = global.signin();
         await request(app).put(`/api/tickets/${id}`).set("Cookie", otherCookie)
             .send({ title: "#1", price: 10 })
             .expect(401);
@@ -65,7 +60,7 @@ describe("update tickets route handler", () => {
         await request(app).put(`/api/tickets/${id}`).set("Cookie", cookie)
             .send({ title: "#1", price: 20 })
             .expect(200);
-        const ticket = await Ticket.findById({ id })
+        const ticket = await Ticket.findById(id)
         expect(ticket?.title).toEqual("#1")
         expect(ticket?.price).toEqual(20)
     })
@@ -78,7 +73,7 @@ describe("update tickets route handler", () => {
             .send({ title: 'Updated Concert', price: 99 })
             .expect(200);
 
-        expect(natsWrapper.js.publish).toHaveBeenCalledTimes(1)
+        expect(natsWrapper.js.publish).toHaveBeenCalledTimes(2)
     })
     it("fails if ticket is reserved", async () => {
         const { id, cookie } = await createTicket();

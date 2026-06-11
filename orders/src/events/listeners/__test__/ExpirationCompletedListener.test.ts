@@ -43,14 +43,15 @@ it('does not ack if order not found', async () => {
 
 it('returns ack early if already paid', async () => {
     const { data, listener, msg, order } = await setup();
-    const updatedOrder = await Order.findById(order.id);
     order.set({ status: OrderStatus.Complete });
-    await updatedOrder!.save();
+    await order.save();
     await listener.onMessage(data, msg);
 
 
-    expect(msg.ack).toHaveBeenCalled();
+    const updatedOrder = await Order.findById(order.id);
     expect(updatedOrder!.status).toEqual(OrderStatus.Complete);
+    expect(msg.ack).toHaveBeenCalled();
+
 });
 
 it("sets status to cancelled", async () => {

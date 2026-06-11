@@ -14,20 +14,20 @@ describe("Create Ticket Route", () => {
             .send({})
             .expect(401);
     })
-    it("returns with 401 if title is empty", async () => {
+    it("returns with 400 if title is empty", async () => {
         const cookie = global.signin()
         await request(app)
             .post('/api/tickets').set("Cookie", cookie)
             .send({ title: "", price: 10 })
-            .expect(401);
+            .expect(400);
     })
-    it("returns with 401 if price is zero", async () => {
+    it("returns with 400 if price is zero", async () => {
         const cookie = global.signin()
 
         await request(app)
             .post('/api/tickets').set("Cookie", cookie)
             .send({ title: "1", price: 0 })
-            .expect(401);
+            .expect(400);
     })
     it("returns 200 if all correct", async () => {
         const cookie = global.signin()

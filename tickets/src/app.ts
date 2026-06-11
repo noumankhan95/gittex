@@ -1,7 +1,7 @@
 import express from "express";
 import { json } from "body-parser";
 
-import { errorHandler } from "@nmstickets/common";
+import { currentUser, errorHandler } from "@nmstickets/common";
 import { NotFoundError } from "@nmstickets/common";
 import cookieSession from "cookie-session";
 import { CreateTicketRouter } from "./routes/create-ticket";
@@ -15,6 +15,7 @@ app.use(cookieSession({
     signed: false
 }))
 app.use(json());
+app.use(currentUser)
 app.use(CreateTicketRouter)
 app.use(ShowTicketRouter)
 app.use(AllTicketsRouter)

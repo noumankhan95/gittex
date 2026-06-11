@@ -1,7 +1,7 @@
 import express from "express";
 import { json } from "body-parser";
 
-import { errorHandler } from "@nmstickets/common";
+import { currentUser, errorHandler } from "@nmstickets/common";
 import { NotFoundError } from "@nmstickets/common";
 import cookieSession from "cookie-session";
 import { createChargeRouter } from "./routes/create-charge";
@@ -12,6 +12,7 @@ app.use(cookieSession({
     signed: false
 }))
 app.use(json());
+app.use(currentUser)
 app.use(createChargeRouter)
 app.use(() => {
     throw new NotFoundError();

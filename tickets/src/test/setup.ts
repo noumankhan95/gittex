@@ -1,3 +1,5 @@
+process.env.JWT_KEY = 'test-jwt-key';
+process.env.NODE_ENV = 'test';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import jwt from "jsonwebtoken"
@@ -8,7 +10,6 @@ declare global {
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
-    process.env.JWT_KEY = 'test-jwt-key';
 
     mongo = await MongoMemoryServer.create();
     await mongoose.connect(mongo.getUri());

@@ -8,18 +8,6 @@
     "build": "tsc",
     "test": "jest --watchAll --no-cache"
   },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./src/test/setup.ts"
-    ],
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "./tsconfig.json"
-      }
-    }
-  },
   "dependencies": {
     "@nats-io/jetstream": "^3.4.0",
     "@nats-io/transport-node": "^3.4.0",

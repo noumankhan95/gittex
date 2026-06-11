@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Order } from "./order-model";
 import { OrderStatus } from "@nmstickets/common";
 interface TicketAttrs {
@@ -36,7 +35,9 @@ const TicketSchema = new mongoose.Schema({
             ret.id = ret._id;
             delete ret._id;
         }
-    }
+    },
+    optimisticConcurrency: true,
+    versionKey: "version",
 })
 TicketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
     return Ticket.findOne({
@@ -66,8 +67,6 @@ TicketSchema.methods.isReserved = async function () {
 
     return !!existingOrder;
 };
-TicketSchema.set("versionKey", "version")
-TicketSchema.plugin(updateIfCurrentPlugin)
 const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", TicketSchema);
 
 export { Ticket }

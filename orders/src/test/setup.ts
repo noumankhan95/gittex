@@ -1,21 +1,22 @@
+process.env.JWT_KEY = 'test-jwt-key';
+process.env.NODE_ENV = "test"
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
-
+import jwt from "jsonwebtoken"
 declare global {
-    var signin: () => { cookie: string[]; id: string };
+    var signin: () => string[];
 }
 
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
-    process.env.JWT_KEY = 'test-jwt-key';
 
     mongo = await MongoMemoryServer.create();
     await mongoose.connect(mongo.getUri());
-});
+}, 1000);
 
 beforeEach(async () => {
+    // clear all mock call counts between tests
     jest.clearAllMocks();
 
     const collections = await mongoose.connection.db!.collections();
@@ -27,15 +28,17 @@ beforeEach(async () => {
 afterAll(async () => {
     if (mongo) await mongo.stop();
     await mongoose.connection.close();
-});
+}, 10000);
 
 global.signin = () => {
-    const id = new mongoose.Types.ObjectId().toHexString();
-    const payload = { id, email: 'test@test.com' };
+    const payload = {
+        id: new mongoose.Types.ObjectId().toHexString(),
+        email: 'test@test.com',
+    };
 
     const token = jwt.sign(payload, process.env.JWT_KEY!);
     const session = JSON.stringify({ jwt: token });
     const base64 = Buffer.from(session).toString('base64');
 
-    return { cookie: [`session=${base64}`], id };
+    return [`session=${base64}`];
 };

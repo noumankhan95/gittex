@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@nmstickets/common";
 import { TicketDoc } from "./ticket-model"
 interface OrderAttrs {
@@ -47,11 +46,12 @@ const orderSchema = new mongoose.Schema(
                 delete ret._id;
             },
         },
+        optimisticConcurrency: true,
+        versionKey: "version",
     }
 );
 
-orderSchema.set('versionKey', 'version');
-orderSchema.plugin(updateIfCurrentPlugin);
+
 
 orderSchema.statics.build = (attrs: OrderAttrs) => {
     return new Order(attrs);
